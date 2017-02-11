@@ -14,14 +14,15 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = Mechanical_IO.MODID, version = Mechanical_IO.VERSION)
 public class Mechanical_IO
 {
-    public static final String MODID = "MechanicalIO";
+    public static final String MODID = "mechanicalio";
     public static final String VERSION = "1.0";
     public static final String name = "Mechanical IO";
+    public static final MechanicalTab mechanicalTab = new MechanicalTab();
 
     @SidedProxy(serverSide = "com.LogicMaster63.Mechanical_IO.proxy.CommonProxy", clientSide = "com.LogicMaster63.Mechanical_IO.proxy.ClientProxy")
     public static CommonProxy proxy;
 
-    @Mod.Instance("MechanicalIO")
+    @Mod.Instance("mechanicalio")
     public static Mechanical_IO instance;
 
     @Mod.EventHandler
@@ -31,6 +32,7 @@ public class Mechanical_IO
         Items.init();
         Items.register();
         TileEntities.register();
+        MechanicalRecipes.addRecipes();
     }
 
     @Mod.EventHandler
