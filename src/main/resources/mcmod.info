@@ -1,0 +1,16 @@
+[
+{
+  "modid": "MechanicalIO",
+  "name": "Mechanical IO",
+  "description": "A tech mod",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["LogicMaster63"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
