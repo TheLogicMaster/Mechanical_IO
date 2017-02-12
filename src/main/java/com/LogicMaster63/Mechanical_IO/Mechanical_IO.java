@@ -28,9 +28,7 @@ public class Mechanical_IO
     @Mod.EventHandler
     public void init(FMLPreInitializationEvent event) {
         Blocks.init();
-        Blocks.register();
         Items.init();
-        Items.register();
         TileEntities.register();
         MechanicalRecipes.addRecipes();
     }

@@ -1,32 +1,53 @@
 package com.LogicMaster63.Mechanical_IO.init;
 
+import com.LogicMaster63.Mechanical_IO.ItemModelProvider;
+import com.LogicMaster63.Mechanical_IO.ItemOreDict;
 import com.LogicMaster63.Mechanical_IO.Mechanical_IO;
+import com.LogicMaster63.Mechanical_IO.blocks.BlockBase;
+import com.LogicMaster63.Mechanical_IO.blocks.BlockOre;
+import com.LogicMaster63.Mechanical_IO.blocks.CropCorn;
 import com.LogicMaster63.Mechanical_IO.blocks.OreCopper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Blocks {
 
-    public static Block oreCopper;
+    public static BlockOre oreCopper;
+    public static CropCorn cropCorn;
 
     public static void init() {
-        oreCopper = new OreCopper(Material.IRON).setUnlocalizedName("oreCopper").setCreativeTab(Mechanical_IO.mechanicalTab).setRegistryName("oreCopper");
+        oreCopper = register(new BlockOre("oreCopper", "oreCopper"));
+        cropCorn = register(new CropCorn(), null);
     }
 
-    public static void register() {
-        GameRegistry.register(oreCopper);
+    private static <T extends Block> T register(T block, ItemBlock itemBlock) {
+        GameRegistry.register(block);
+        if(itemBlock != null)
+            GameRegistry.register(itemBlock);
+
+        if (block instanceof ItemModelProvider) {
+            ((ItemModelProvider)block).registerItemModel(itemBlock);
+        }
+        if (block instanceof ItemOreDict) {
+            ((ItemOreDict)block).initOreDict();
+        }
+        if (itemBlock instanceof ItemOreDict) {
+            ((ItemOreDict) itemBlock).initOreDict();
+        }
+
+        return block;
     }
 
-    public static void registerRenders() {
-        registerRender(oreCopper);
+    private static <T extends Block> T register(T block) {
+        ItemBlock itemBlock = new ItemBlock(block);
+        itemBlock.setRegistryName(block.getRegistryName());
+        return register(block, itemBlock);
     }
 
-    public static void registerRender(Block block) {
-        Item item = Item.getItemFromBlock(block);
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(Mechanical_IO.MODID + ":" + item.getUnlocalizedName().substring(5), "inventory"));
-    }
 }

@@ -1,31 +1,36 @@
 package com.LogicMaster63.Mechanical_IO.init;
 
+import com.LogicMaster63.Mechanical_IO.ItemModelProvider;
+import com.LogicMaster63.Mechanical_IO.ItemOreDict;
 import com.LogicMaster63.Mechanical_IO.Mechanical_IO;
-import com.LogicMaster63.Mechanical_IO.items.IngotCopper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import com.LogicMaster63.Mechanical_IO.items.ItemBase;
+import com.LogicMaster63.Mechanical_IO.items.ItemOre;
+import com.LogicMaster63.Mechanical_IO.items.SeedCorn;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class Items {
 
-    public static Item ingotCopper;
+    public static ItemBase ingotCopper;
+    public static SeedCorn seedCorn;
+    public static ItemBase corn;
 
     public static void init() {
-        ingotCopper = new IngotCopper().setUnlocalizedName("ingotCopper").setCreativeTab(Mechanical_IO.mechanicalTab).setRegistryName("ingotCopper");
+        ingotCopper = register(new ItemOre("ingotCopper", "ingotCopper"));
+        seedCorn = register(new SeedCorn());
+        corn = register(new ItemOre("corn", "cropCorn"));
     }
 
-    public static void register() {
-        GameRegistry.register(ingotCopper);
-        OreDictionary.registerOre("ingotCopper", ingotCopper);
-    }
+    private static <T extends Item> T register(T item) {
+        GameRegistry.register(item);
 
-    public static void registerRenders() {
-        registerRender(ingotCopper);
-    }
+        if (item instanceof ItemModelProvider) {
+            ((ItemModelProvider)item).registerItemModel(item);
+        }
+        if (item instanceof ItemOreDict) {
+            ((ItemOreDict)item).initOreDict();
+        }
 
-    public static void registerRender(Item item) {
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(Mechanical_IO.MODID + ":" + item.getUnlocalizedName().substring(5), "inventory"));
+        return item;
     }
 }
